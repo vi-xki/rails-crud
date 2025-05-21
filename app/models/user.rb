@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :posts, dependent: :destroy
+  has_one_attached :profile_picture
 
   validates :name, presence: true
   validates :username, presence: true, uniqueness: true
@@ -8,6 +9,7 @@ class User < ApplicationRecord
   validates :phone, presence: true, format: { with: /\A\+?\d{10,15}\z/ }
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
   validates :password_confirmation, presence: true, if: :password_required?
+  validate :acceptable_profile_picture
 
   before_validation :generate_two_factor_secret, on: :create
 
@@ -36,5 +38,18 @@ class User < ApplicationRecord
   def generate_two_factor_secret
     self.two_factor_secret = ROTP::Base32.random
     self.two_factor_enabled = false
+  end
+
+  def acceptable_profile_picture
+    return unless profile_picture.attached?
+
+    unless profile_picture.blob.byte_size <= 5.megabyte
+      errors.add(:profile_picture, "is too big (maximum is 5MB)")
+    end
+
+    acceptable_types = ["image/jpeg", "image/png", "image/gif"]
+    unless acceptable_types.include?(profile_picture.blob.content_type)
+      errors.add(:profile_picture, "must be a JPEG, PNG, or GIF")
+    end
   end
 end

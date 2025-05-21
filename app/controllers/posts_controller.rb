@@ -3,26 +3,27 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @posts = Post.all.order(created_at: :desc)
+    @posts = Post.includes(:user, :tags).order(created_at: :desc)
   end
 
   def show
   end
 
   def new
-    @post = Post.new
+    @post = current_user.posts.build
+  end
+
+  def edit
   end
 
   def create
     @post = current_user.posts.build(post_params)
+
     if @post.save
       redirect_to @post, notice: 'Post was successfully created.'
     else
       render :new
     end
-  end
-
-  def edit
   end
 
   def update
@@ -35,7 +36,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to posts_path, notice: 'Post was successfully deleted.'
+    redirect_to posts_url, notice: 'Post was successfully deleted.'
   end
 
   private
@@ -45,6 +46,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :caption, :tag_list, images: [])
   end
 end

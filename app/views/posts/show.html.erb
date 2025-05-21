@@ -1,20 +1,56 @@
-<div class="post-container">
-  <div class="post-header">
-    <h2><%= @post.title %></h2>
-    <p class="post-meta">
-      Posted by <%= @post.user.username %> on <%= @post.created_at.strftime("%B %d, %Y") %>
-    </p>
-  </div>
+<div class="post-show">
+  <div class="card">
+    <div class="card-body">
+      <div class="post-header mb-4">
+        <h1 class="card-title"><%= @post.title %></h1>
+        <div class="post-meta text-muted">
+          <span class="author">Posted by <%= @post.user.username %></span>
+          <span class="mx-2">•</span>
+          <span class="date"><%= time_ago_in_words(@post.created_at) %> ago</span>
+        </div>
+      </div>
 
-  <div class="post-content">
-    <%= simple_format(@post.content) %>
-  </div>
+      <% if @post.caption.present? %>
+        <div class="post-caption mb-4">
+          <p class="lead"><%= @post.caption %></p>
+        </div>
+      <% end %>
 
-  <div class="post-actions">
-    <%= link_to "Back to Posts", posts_path, class: "btn btn-secondary" %>
-    <% if @post.user == current_user %>
-      <%= link_to "Edit", edit_post_path(@post), class: "btn btn-warning" %>
-      <%= button_to "Delete", post_path(@post), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
-    <% end %>
+      <% if @post.images.attached? %>
+        <div class="post-images mb-4">
+          <div class="row g-3">
+            <% @post.images.each do |image| %>
+              <div class="col-md-6">
+                <div class="card">
+                  <%= image_tag image.variant(resize_to_limit: [800, 800]), class: "img-fluid rounded" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="post-content mb-4">
+        <%= simple_format(@post.content) %>
+      </div>
+
+      <% if @post.tags.any? %>
+        <div class="post-tags mb-4">
+          <% @post.tags.each do |tag| %>
+            <span class="badge bg-primary me-2"><%= tag.name %></span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="post-actions">
+        <% if current_user == @post.user %>
+          <div class="btn-group">
+            <%= link_to "Edit", edit_post_path(@post), class: "btn btn-primary" %>
+            <%= button_to "Delete", post_path(@post), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+          </div>
+        <% end %>
+        <%= link_to "Back to Posts", posts_path, class: "btn btn-secondary ms-2" %>
+      </div>
+    </div>
   </div>
 </div>
