@@ -19,7 +19,7 @@ gem "jbuilder"
 
 # Authentication and Security
 gem "bcrypt", "~> 3.1.7"
-gem "rqrcode", "~> 2.1"  # For generating QR codes
+gem "rqrcode", "~> 3.1"  # For generating QR codes
 gem "rotp", "~> 6.2"     # For TOTP (Time-based One-Time Password)
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
