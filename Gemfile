@@ -22,7 +22,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "rqrcode", "~> 2.1"  # For generating QR codes
 gem "rotp", "~> 6.2"     # For TOTP (Time-based One-Time Password)
 gem "devise", "~> 4.9"   # For authentication
-gem "devise-two-factor", "~> 5.0"  # For 2FA support
+gem "devise-two-factor", "~> 6.1"  # For 2FA support
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
