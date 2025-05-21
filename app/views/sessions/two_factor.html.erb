@@ -1,0 +1,22 @@
+<div class="form-container">
+  <h2>Two-Factor Authentication</h2>
+
+  <div class="verification-instructions">
+    <p>Please enter the 6-digit code from your authenticator app:</p>
+    <%= form_with(url: two_factor_path) do |f| %>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.text_field :code, class: "form-control", placeholder: "Enter 6-digit code" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Verify", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div> 

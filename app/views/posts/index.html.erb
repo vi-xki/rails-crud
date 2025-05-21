@@ -1,0 +1,25 @@
+<div class="posts-container">
+  <div class="posts-header">
+    <h2>Posts</h2>
+    <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="posts-list">
+    <% @posts.each do |post| %>
+      <div class="post-card">
+        <h3><%= link_to post.title, post_path(post) %></h3>
+        <p class="post-meta">
+          Posted by <%= post.user.username %> on <%= post.created_at.strftime("%B %d, %Y") %>
+        </p>
+        <p class="post-excerpt"><%= truncate(post.content, length: 150) %></p>
+        <div class="post-actions">
+          <%= link_to "Read More", post_path(post), class: "btn btn-secondary" %>
+          <% if post.user == current_user %>
+            <%= link_to "Edit", edit_post_path(post), class: "btn btn-warning" %>
+            <%= button_to "Delete", post_path(post), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

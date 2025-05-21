@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Rails Crud" %></title>
+    <title>Rails CRUD App</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -18,11 +18,35 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar">
+      <div class="container">
+        <%= link_to "Rails CRUD", root_path, class: "navbar-brand" %>
+        <div class="navbar-menu">
+          <% if logged_in? %>
+            <%= link_to "New Post", new_post_path, class: "navbar-item" %>
+            <%= link_to "My Profile", user_path(current_user), class: "navbar-item" %>
+            <%= button_to "Logout", logout_path, method: :delete, class: "navbar-item" %>
+          <% else %>
+            <%= link_to "Login", login_path, class: "navbar-item" %>
+            <%= link_to "Register", register_path, class: "navbar-item" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <% flash.each do |name, msg| %>
+        <div class="alert alert-<%= name == "notice" ? "success" : "danger" %>">
+          <%= msg %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
   </body>
 </html>

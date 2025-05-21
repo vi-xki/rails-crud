@@ -1,0 +1,27 @@
+<div class="form-container">
+  <h2>Set Up Two-Factor Authentication</h2>
+
+  <div class="setup-instructions">
+    <p>1. Scan this QR code with your authenticator app (like Google Authenticator):</p>
+    <div class="qr-code">
+      <%= @qr_code.as_svg(
+        module_size: 4,
+        standalone: true,
+        use_path: true,
+        viewbox: true,
+        style: :classic
+      ).html_safe %>
+    </div>
+
+    <p>2. Enter the 6-digit code from your authenticator app:</p>
+    <%= form_with(url: enable_two_factor_path) do |f| %>
+      <div class="form-group">
+        <%= f.text_field :code, class: "form-control", placeholder: "Enter 6-digit code" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Enable 2FA", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div> 

@@ -1,0 +1,20 @@
+<div class="post-container">
+  <div class="post-header">
+    <h2><%= @post.title %></h2>
+    <p class="post-meta">
+      Posted by <%= @post.user.username %> on <%= @post.created_at.strftime("%B %d, %Y") %>
+    </p>
+  </div>
+
+  <div class="post-content">
+    <%= simple_format(@post.content) %>
+  </div>
+
+  <div class="post-actions">
+    <%= link_to "Back to Posts", posts_path, class: "btn btn-secondary" %>
+    <% if @post.user == current_user %>
+      <%= link_to "Edit", edit_post_path(@post), class: "btn btn-warning" %>
+      <%= button_to "Delete", post_path(@post), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+    <% end %>
+  </div>
+</div>
